@@ -1,3 +1,5 @@
+# Gramaddict Helper
+
 Generate binary `make binary`
 move it to your `$PATH`
 
@@ -6,8 +8,7 @@ Run it as a service or in a background process (less recommended)
 Cronjob `curl localhost:8080/start` based on your timing needs.
 
 
-# Environment variables
-============================================================
+## Environment variables
 
 ACC [Mandaotory]    Instagram account name
 
