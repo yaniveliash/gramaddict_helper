@@ -1,4 +1,8 @@
 # Gramaddict Helper
+A restAPI layer to start, stop and get logs in your browser easily.
+Intended to be used on deviced attached to a controlling machine (e.g. raspberry pi with ADB over USB).
+
+### How to use
 
 Generate binary `make binary`
 move it to your `$PATH`
@@ -8,8 +12,7 @@ Run it as a service or in a background process (less recommended):
 
 Cronjob `curl localhost:8080/start` based on your timing needs.
 
-
-## Environment variables
+### Environment variables
 
 `ACC` [Mandaotory]    Instagram account name
 
