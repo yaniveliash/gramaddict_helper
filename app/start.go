@@ -20,23 +20,30 @@ func StartApp(c *gin.Context) {
 
 		message = message + "Starting app now...<br><br>"
 
-		args := []string{"-m", "run.py", "--config", string("accounts/" + utils.AppEnv.Account), "/config.yml"}
+		log.Printf("CHDIR %v", utils.AppEnv.Home)
+
+		args := []string{"-m", "run.py", "--config", string("accounts/"+utils.AppEnv.Account) + "/config.yml"}
+
+		log.Printf("Command 'python3 %v'", args)
+
 		cmd := exec.Command("python3", args...)
 		cmd.Dir = utils.AppEnv.Home
-		err := cmd.Start()
 
-		if err != nil {
-			log.Println("something wrong")
-			message = message + "Something went wrong.<br><br>"
-			message = message + "<br><a href='/'>back</a><br>"
-			utils.HtmlMessage(200, c, message)
+		if err := cmd.Start(); err != nil {
+			utils.HtmlMessage(201, c, "Not OK")
 			return
 		}
 
+		go func() {
+			cmd.Wait()
+		}()
+
 		if utils.IsRunning() {
+			log.Println("Started")
 			message = message + "Started<br>" + "<br><a href='/'>back</a><br>"
 			utils.HtmlMessage(200, c, message)
 		} else {
+			log.Println("Failed to start")
 			message = message + "Failed to start<br>"
 			message = message + "<br><a href='/'>back</a><br>"
 			utils.HtmlMessage(201, c, message)
@@ -47,5 +54,6 @@ func StartApp(c *gin.Context) {
 		message = message + "Already running...<br>" + "PID: " + utils.GetPID(utils.AppEnv.Filter) + "<br><a href='/'>back</a><br>"
 		utils.HtmlMessage(200, c, message)
 	}
+
 	log.Println("done")
 }

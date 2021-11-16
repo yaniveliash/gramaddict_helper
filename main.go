@@ -7,7 +7,6 @@ import (
 
 	"github.com/geostant/gramaddict_helper/app"
 	"github.com/geostant/gramaddict_helper/utils"
-	"github.com/thinkerou/favicon"
 )
 
 func main() {
@@ -21,7 +20,6 @@ func main() {
 	utils.InitEnv()
 
 	router := utils.SetupRouter()
-	router.Use(favicon.New("./instagram.ico"))
 	router.GET("/", utils.GetStatus)
 	router.GET("/start", app.StartApp)
 	router.GET("/stop", app.StopApp)

@@ -42,8 +42,9 @@ func GetPID(filter string) string {
 	if err != nil {
 		log.Fatal(err)
 	}
-	for _, l := range strings.Split(string(out), "\n") {
+	for i, l := range strings.Split(string(out), "\n") {
 		if strings.Contains(l, filter) {
+			log.Println(i, " ", l)
 			f := strings.Fields(l)
 			return f[1]
 		}
@@ -103,7 +104,6 @@ func PullGit() {
 		log.Println(out)
 		log.Fatal(err)
 	}
-	log.Println(string(out))
 }
 
 func SetADB() {
@@ -114,7 +114,6 @@ func SetADB() {
 		log.Println(out)
 		log.Fatal(err)
 	}
-	log.Println(string(out))
 }
 
 func UnlockADB() {

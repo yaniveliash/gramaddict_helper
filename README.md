@@ -3,7 +3,8 @@
 Generate binary `make binary`
 move it to your `$PATH`
 
-Run it as a service or in a background process (less recommended)
+Run it as a service or in a background process (less recommended):
+`APP="account_value" GIN_MODE="release" gramaddict_helper`
 
 Cronjob `curl localhost:8080/start` based on your timing needs.
 
