@@ -1,5 +1,5 @@
 # Gramaddict Helper
-A restAPI layer to start, stop and get logs in your browser easily.
+A REST API layer to start, stop and get logs in your browser easily.
 Intended to be used on deviced attached to a controlling machine (e.g. raspberry pi with ADB over USB).
 
 ### How to use
