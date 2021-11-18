@@ -1,6 +1,8 @@
 # Gramaddict Helper
-A REST API layer to start, stop and get logs in your browser easily.
-Intended to be used on deviced attached to a controlling machine (e.g. raspberry pi with ADB over USB).
+Gramaddict web UI interface for a single device
+allow you to see the logs in real time, start and stop the bot all from your browser.
+
+Intended to be used on a single device attached to a controlling machine (e.g. raspberry pi with ADB over USB).
 
 ### How to use
 
