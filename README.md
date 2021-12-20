@@ -7,12 +7,13 @@ Intended to be used on a single device attached to a controlling machine (e.g. r
 ### How to use
 
 Generate binary `make binary`
-move it to your `$PATH`
+move it to your `$PATH` or add a new entry in your `$PATH`.
 
-Run it as a service or in a background process (less recommended):
-`APP="account_value" GIN_MODE="release" gramaddict_helper`
+Set it to run on reboot using cronjob (replace env vars):
+`@reboot ACC="ACCOUNT_NAME" GH="PATH_TO_GRAMADDICT" gramaddict_helper`
 
-Cronjob `curl localhost:8080/start` based on your timing needs.
+Then, add a cronjob to execute your bot based on your required time (an example for everyday at 07:00 in the morning):
+`0 07 * * * curl localhost:8080/start` based on your timing needs.
 
 ### Environment variables
 

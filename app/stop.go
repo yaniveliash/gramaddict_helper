@@ -13,16 +13,15 @@ import (
 func StopApp(c *gin.Context) {
 	var message string
 	if utils.IsRunning() {
-		log.Println("I'm running, PID: ", utils.GetPID(utils.AppEnv.Filter))
+		log.Println("I'm running, PID: ", utils.GetPID(utils.Params.Filter))
 		message = message + "Stopping app now...<br><br>"
-		// log.Println(utils.GetPID(utils.AppEnv.Filter))
-		cmd := exec.Command("kill", utils.GetPID(utils.AppEnv.Filter))
+		// log.Println(utils.GetPID(utils.Params.Filter))
+		cmd := exec.Command("kill", utils.GetPID(utils.Params.Filter))
 		err := cmd.Start()
 		if err != nil {
 			message = message + "Something went wrong while stopping...<br>"
 			message = message + "<br><a href='/'>back</a><br>"
-			utils.HtmlMessage(201, c, message)
-			return
+			utils.HTMLMessage(201, c, message)
 		}
 
 		time.Sleep(2 * time.Second)
@@ -31,20 +30,17 @@ func StopApp(c *gin.Context) {
 			message = message + "Stopped app success.<br><br>"
 			message = message + "<br><a href='/'>back</a><br>"
 			log.Println("done")
-			utils.HtmlMessage(200, c, message)
-			return
+			utils.HTMLMessage(200, c, message)
 		} else {
 			message = message + "Failed to stop app.<br><br>"
 			message = message + "<br><a href='/'>back</a><br>"
-			utils.HtmlMessage(201, c, message)
+			utils.HTMLMessage(201, c, message)
 			log.Println("Failed...")
-			return
 		}
 	} else {
 		message = message + "APP isn't running....<br><br>"
 		message = message + "<br><a href='/'>back</a><br>"
 		log.Println("done")
-		utils.HtmlMessage(200, c, message)
-		return
+		utils.HTMLMessage(200, c, message)
 	}
 }

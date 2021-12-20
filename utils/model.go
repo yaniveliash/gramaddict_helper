@@ -6,9 +6,11 @@ import (
 )
 
 const (
+	// ContentTypeHTML constant is the default output from the gin gonic router.
 	ContentTypeHTML = "text/html; charset=utf-8"
 )
 
+// Env is a structure for the common parameters
 type Env struct {
 	Home       string
 	AppLogPath string
@@ -17,37 +19,37 @@ type Env struct {
 	Filter     string
 }
 
-var (
-	AppEnv Env
-)
+// Params hold the environment parameters
+var Params Env
 
-func InitEnv() {
+// InitParams function initialized common bits.
+func InitParams() {
 	s, b := os.LookupEnv("GH")
 	if b {
-		AppEnv.Home = s
+		Params.Home = s
 	} else {
-		AppEnv.Home = os.Getenv("HOME") + "/gramaddict"
+		Params.Home = os.Getenv("HOME") + "/gramaddict"
 	}
 
 	s, b = os.LookupEnv("ACC")
 	if b {
-		AppEnv.Account = s
+		Params.Account = s
 	} else {
-		envError("ACC env var much be set")
+		envError("ACC env var must be set")
 	}
 
 	s, b = os.LookupEnv("FILTER")
 	if b {
-		AppEnv.Filter = s
+		Params.Filter = s
 	} else {
-		AppEnv.Filter = "run.py"
+		Params.Filter = "run.py"
 	}
 
 	s, b = os.LookupEnv("LOG")
 	if b {
-		AppEnv.AppLogPath = AppEnv.Home + "/" + s
+		Params.AppLogPath = Params.Home + "/" + s
 	} else {
-		AppEnv.AppLogPath = AppEnv.Home + "/logs/" + AppEnv.Account + ".log"
+		Params.AppLogPath = Params.Home + "/logs/" + Params.Account + ".log"
 	}
 }
 

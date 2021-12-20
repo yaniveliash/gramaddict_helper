@@ -17,14 +17,15 @@ func main() {
 		help()
 	}
 
-	utils.InitEnv()
+	utils.InitParams()
 
 	router := utils.SetupRouter()
 	router.GET("/", utils.GetStatus)
 	router.GET("/start", app.StartApp)
 	router.GET("/stop", app.StopApp)
 
-	router.Run(":8080")
+	err := router.Run(":8080")
+	utils.CheckError(err)
 }
 
 func help() {

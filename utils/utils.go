@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"os/exec"
@@ -11,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// SetupRouter is the gin gonic routing engine setup function.
 func SetupRouter() *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
@@ -18,30 +20,21 @@ func SetupRouter() *gin.Engine {
 	return r
 }
 
-// HtmlMessage function responsible for the output message from the router.
-func HtmlMessage(statusCode int, c *gin.Context, message string) {
+// HTMLMessage function responsible for the output message from the router.
+func HTMLMessage(statusCode int, c *gin.Context, message string) {
 	c.Data(statusCode, ContentTypeHTML, []byte(message))
 }
 
 // IsRunning check the process status
 func IsRunning() bool {
-	return GetPID(AppEnv.Filter) != ""
+	return GetPID(Params.Filter) != ""
 }
-
-// GetPIDByFile function return the PID number
-// func GetPIDByFile() string {
-// 	rawData, err := os.ReadFile(AppEnv.PathToPid)
-// 	CheckError(err)
-// 	return string(rawData)
-// }
 
 // GetPID function return the PID number
 func GetPID(filter string) string {
 	cmd := exec.Command("ps", "aux")
 	out, err := cmd.Output()
-	if err != nil {
-		log.Fatal(err)
-	}
+	CheckError(err)
 	for i, l := range strings.Split(string(out), "\n") {
 		if strings.Contains(l, filter) {
 			log.Println(i, " ", l)
@@ -81,9 +74,9 @@ func GetStatus(c *gin.Context) {
 	dt := time.Now()
 
 	if IsRunning() {
-		c.Data(200, ContentTypeHTML, []byte("<html>["+dt.String()+"] ✅ <br><a href='/stop'>stop app</a><h3>app log</h3><code>"+getAppLog(c, AppEnv.AppLogPath)+"</code></html>"))
+		c.Data(200, ContentTypeHTML, []byte("<html>["+dt.String()+"] ✅ <br><a href='/stop'>stop app</a><h3>app log</h3><code>"+getAppLog(c, Params.AppLogPath)+"</code></html>"))
 	} else {
-		c.Data(200, ContentTypeHTML, []byte("<html>["+dt.String()+"] ❌ <br><a href='/start'>start app</a><h3>app log</h3><code>"+getAppLog(c, AppEnv.AppLogPath)+"</code></html>"))
+		c.Data(200, ContentTypeHTML, []byte("<html>["+dt.String()+"] ❌ <br><a href='/start'>start app</a><h3>app log</h3><code>"+getAppLog(c, Params.AppLogPath)+"</code></html>"))
 	}
 }
 
@@ -97,39 +90,25 @@ func CheckError(err error) {
 // PullGit function is...
 func PullGit() {
 	cmd := exec.Command("git", "pull")
-	cmd.Dir = AppEnv.Home
+	cmd.Dir = Params.Home
 	out, err := cmd.Output()
-
-	if err != nil {
-		log.Println(out)
-		log.Fatal(err)
-	}
+	CheckError(fmt.Errorf(string(out), "\n", err))
 }
 
+// SetADB initialize the ADB connection to the android device
 func SetADB() {
 	cmd := exec.Command("adb", "devices")
 	out, err := cmd.Output()
-
-	if err != nil {
-		log.Println(out)
-		log.Fatal(err)
-	}
+	CheckError(fmt.Errorf(string(out), "\n", err))
 }
 
+// UnlockADB will mock a human swipe to unlock the android device screen.
 func UnlockADB() {
 	cmd := exec.Command("adb", "shell", "input", "keyevent", "82")
 	out, err := cmd.Output()
-
-	if err != nil {
-		log.Println(out)
-		log.Fatal(err)
-	}
+	CheckError(fmt.Errorf(string(out), "\n", err))
 
 	cmd = exec.Command("adb", "shell", "input", "swipe", "100", "500", "100", "1450", "100")
 	out, err = cmd.Output()
-
-	if err != nil {
-		log.Println(out)
-		log.Fatal(err)
-	}
+	CheckError(fmt.Errorf(string(out), "\n", err))
 }
